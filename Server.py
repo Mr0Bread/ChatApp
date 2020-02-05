@@ -17,7 +17,18 @@ class Server:
         self.SERVER.bind(self.ADDRESS)
 
     def accept_incoming_connection(self):
+        run = True
+
+        while run:
+            client, client_address = self.SERVER.accept()
+            print(f'{client} has been connected')
+            client.send(bytes('This message send by server', 'utf8'))
+            self.addresses[client] = client_address
+            Thread(target=self.handle_client, args=(client,)).start()
+
+    def handle_client(self):
         pass
+        # TODO
 
 
 if __name__ == '__main__':
